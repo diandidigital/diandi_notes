@@ -176,7 +176,7 @@ class DiandiNotesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Diandi Notes',
+      title: 'NoteFlow',
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: DiandiColors.bg,
@@ -246,7 +246,9 @@ class _NotesHomePageState extends State<NotesHomePage> {
     }
     return _notes
         .where(
-          (note) => note.title.toLowerCase().contains(_search) || note.content.toLowerCase().contains(_search),
+          (note) =>
+              note.title.toLowerCase().contains(_search) ||
+              note.content.toLowerCase().contains(_search),
         )
         .toList();
   }
@@ -275,7 +277,11 @@ class _NotesHomePageState extends State<NotesHomePage> {
             children: [
               Text(
                 note == null ? 'Nouvelle note' : 'Modifier la note',
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 12),
               TextField(
@@ -310,13 +316,16 @@ class _NotesHomePageState extends State<NotesHomePage> {
                   Expanded(
                     child: FilledButton(
                       onPressed: () async {
-                        if (titleController.text.trim().isEmpty && contentController.text.trim().isEmpty) {
+                        if (titleController.text.trim().isEmpty &&
+                            contentController.text.trim().isEmpty) {
                           return;
                         }
                         await _repository.saveNote(
                           Note(
                             id: note?.id,
-                            title: titleController.text.trim().isEmpty ? 'Sans titre' : titleController.text.trim(),
+                            title: titleController.text.trim().isEmpty
+                                ? 'Sans titre'
+                                : titleController.text.trim(),
                             content: contentController.text,
                             updatedAt: DateTime.now(),
                           ),
@@ -354,16 +363,16 @@ class _NotesHomePageState extends State<NotesHomePage> {
     if (!mounted) {
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Note supprimée')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Note supprimée')));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Diandi Notes'),
+        title: const Text('NoteFlow'),
         backgroundColor: DiandiColors.bg,
       ),
       body: _isLoading
@@ -398,14 +407,18 @@ class _NotesHomePageState extends State<NotesHomePage> {
                           )
                         : ListView.separated(
                             itemCount: _filteredNotes.length,
-                            separatorBuilder: (_, _) => const SizedBox(height: 8),
+                            separatorBuilder: (_, _) =>
+                                const SizedBox(height: 8),
                             itemBuilder: (context, index) {
                               final note = _filteredNotes[index];
                               return Container(
                                 decoration: BoxDecoration(
                                   color: DiandiColors.panel,
                                   borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(color: DiandiColors.deepBlue, width: 1),
+                                  border: Border.all(
+                                    color: DiandiColors.deepBlue,
+                                    width: 1,
+                                  ),
                                 ),
                                 child: ListTile(
                                   onTap: () => _openEditor(note: note),
@@ -413,28 +426,40 @@ class _NotesHomePageState extends State<NotesHomePage> {
                                     note.title,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                   subtitle: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const SizedBox(height: 4),
                                       Text(
                                         note.content,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(color: Colors.white70),
+                                        style: const TextStyle(
+                                          color: Colors.white70,
+                                        ),
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
                                         _dateFormat.format(note.updatedAt),
-                                        style: const TextStyle(color: Colors.white54, fontSize: 12),
+                                        style: const TextStyle(
+                                          color: Colors.white54,
+                                          fontSize: 12,
+                                        ),
                                       ),
                                     ],
                                   ),
                                   trailing: IconButton(
                                     onPressed: () => _delete(note),
-                                    icon: const Icon(Icons.delete_outline, color: DiandiColors.red),
+                                    icon: const Icon(
+                                      Icons.delete_outline,
+                                      color: DiandiColors.red,
+                                    ),
                                   ),
                                 ),
                               );
